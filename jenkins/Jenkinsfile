@@ -4,6 +4,9 @@ pipeline {
         label 'node01'
         } 
   }
+  tools {
+    maven 'maven-apache-3.8.4'
+  }
   stages {
     stage('Checkout Scm') {
       steps {
@@ -11,21 +14,17 @@ pipeline {
       }
     }
 
-    stage('Maven Build 0') {
+    stage('Maven Package') {
       steps {
         sh 'mvn package'
       }
     }
 
-    stage('Shell script 1') {
+    stage('Run') {
       steps {
         sh 'java -jar target/my-app-1.0-SNAPSHOT.jar'
       }
     }
-
-  }
-  tools {
-    maven 'maven-apache-3.8.4'
   }
   post {
     always {
