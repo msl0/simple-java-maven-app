@@ -27,6 +27,7 @@ pipeline {
     always {
       step($class: 'JUnitResultArchiver', checksName: '', testResults: '**/surefire-reports/TEST-*.xml')
       step(followSymlinks: false, $class: 'ArtifactArchiver', artifacts: 'target/*.jar')
+      cleanWs()
     }
   }
 }
