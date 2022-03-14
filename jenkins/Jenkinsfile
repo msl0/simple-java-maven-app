@@ -16,7 +16,6 @@ pipeline {
         sh 'mvn package'
       }
     }
-
     stage('Run') {
       steps {
         sh 'java -jar target/my-app-1.0-SNAPSHOT.jar'
