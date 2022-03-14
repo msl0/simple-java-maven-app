@@ -1,30 +1,37 @@
 pipeline {
-    agent {
-        label 'ubuntu'
+  agent {
+     node { 
+        label 'node01'
+        } 
+  }
+  stages {
+    stage('Checkout Scm') {
+      steps {
+        git 'https://github.com/msl0/simple-java-maven-app.git'
+      }
     }
-    tools {
-        maven 'maven-apache-3.8.4' 
+
+    stage('Maven Build 0') {
+      steps {
+        sh 'mvn package'
+      }
     }
-    stages {
-        stage('Build') {
-            steps {
-                sh 'mvn -B -DskipTests clean package'
-            }
-        }
-        stage('Test') {
-            steps {
-                sh 'mvn test'
-            }
-            post {
-                always {
-                    junit 'target/surefire-reports/*.xml'
-                }
-            }
-        }
-        stage('Deliver') {
-            steps {
-                sh './jenkins/scripts/deliver.sh'
-            }
-        }
+
+    stage('Shell script 1') {
+      steps {
+        sh 'java -jar target/my-app-1.0-SNAPSHOT.jar'
+      }
     }
+
+  }
+  tools {
+    maven 'maven-apache-3.8.4'
+  }
+  post {
+    always {
+      step($class: 'JUnitResultArchiver', checksName: '', testResults: '**/surefire-reports/TEST-*.xml')
+      step(followSymlinks: false, $class: 'ArtifactArchiver', artifacts: 'target/*.jar')
+    }
+
+  }
 }
