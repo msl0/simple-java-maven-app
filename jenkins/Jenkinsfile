@@ -7,12 +7,9 @@ pipeline {
   tools {
     maven 'maven-apache-3.8.4'
   }
-  //options { skipDefaultCheckout() }
   stages {
     stage('Maven Package') {
       steps {
-        //cleanWs()
-        //checkout scm
         sh 'mvn package'
       }
     }
@@ -25,7 +22,6 @@ pipeline {
   }
   post {
     always {
-      cleanWs()
       step($class: 'JUnitResultArchiver', checksName: '', testResults: '**/surefire-reports/TEST-*.xml')
       step(followSymlinks: false, $class: 'ArtifactArchiver', artifacts: 'target/*.jar')
     }
