@@ -7,6 +7,7 @@ pipeline {
   tools {
     maven 'maven-apache-3.8.4'
   }
+  options { skipDefaultCheckout() }
   stages {
     stage('Maven Package') {
       steps {
