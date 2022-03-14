@@ -12,7 +12,7 @@ pipeline {
     stage('Maven Package') {
       steps {
         cleanWs()
-        checkout scm
+        //checkout scm
         sh 'mvn package'
       }
     }
